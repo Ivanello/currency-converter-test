@@ -16,7 +16,7 @@ import static com.codeborne.selenide.Selenide.$$;
 import static org.openqa.selenium.By.cssSelector;
 
 
-public class CurrencyConverterPage extends BasePage {
+public class CurrencyConverterPage extends pages.BasePage {
 
     /* Locators */
 

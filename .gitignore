@@ -49,13 +49,3 @@ fabric.properties
 
 # Editor-based Rest Client
 .idea/httpRequests
-
-.allure/
-.settings/
-allure-results/
-build/
-target/
-*.ipr
-*.iml
-.classpath
-.project

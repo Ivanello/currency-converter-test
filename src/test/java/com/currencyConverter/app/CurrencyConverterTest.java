@@ -4,6 +4,7 @@ import com.codeborne.selenide.Condition;
 import io.qameta.allure.Severity;
 import io.qameta.allure.SeverityLevel;
 import io.qameta.allure.Story;
+import org.junit.Before;
 import pages.CurrencyConverterPage;
 import io.qameta.allure.Feature;
 import org.junit.Test;
@@ -13,108 +14,112 @@ import org.junit.Test;
 @Story("Main converter funcionality")
 public class CurrencyConverterTest extends BaseTests {
 
+    CurrencyConverterPage converterPage;
+
+    @Before
+    public void setupTest() {
+        converterPage = CurrencyConverterPage.open();
+    }
+
     @Severity(SeverityLevel.CRITICAL)
     @Test
     public void verifyUserAbleToSelectCurrencyFromPopularList() {
-        CurrencyConverterPage converterPage = CurrencyConverterPage.open();
 
-        String popCurrency = converterPage.getRandomPopularCurrency();
-        converterPage.selectPopularCurrency(popCurrency)
-                .checkCurrentTabCurrency(popCurrency)
-                .checkPopCurrencySelected(popCurrency)
-                .checkMainCurrencySelected(popCurrency);
+        String expectedPopularCurrency = converterPage.getRandomPopularCurrency();
+
+        converterPage.selectPopularCurrency(expectedPopularCurrency)
+                .checkCurrentTabCurrency(expectedPopularCurrency)
+                .checkPopCurrencySelected(expectedPopularCurrency)
+                .checkMainCurrencySelected(expectedPopularCurrency);
 
     }
 
     @Severity(SeverityLevel.CRITICAL)
     @Test
     public void verifyUserAbleToSelectCurrencyFromMainList() {
-        CurrencyConverterPage converterPage = CurrencyConverterPage.open();
 
-        String popCurrency = converterPage.getRandomPopularCurrency();
-        converterPage.selectMainCurrency(popCurrency)
-                .checkCurrentTabCurrency(popCurrency)
-                .checkPopCurrencySelected(popCurrency)
-                .checkMainCurrencySelected(popCurrency);
+        String expectedPopularCurrency = converterPage.getRandomPopularCurrency();
+        String expectedMaincurrency = "BGN";
 
-        String currency = "BGN";
-        converterPage.selectMainCurrency(currency)
-                .checkCurrentTabCurrency(currency)
-                .checkMainCurrencySelected(currency);
+        converterPage.selectMainCurrency(expectedPopularCurrency)
+                .checkCurrentTabCurrency(expectedPopularCurrency)
+                .checkPopCurrencySelected(expectedPopularCurrency)
+                .checkMainCurrencySelected(expectedPopularCurrency)
+
+                .selectMainCurrency(expectedMaincurrency)
+                .checkCurrentTabCurrency(expectedMaincurrency)
+                .checkMainCurrencySelected(expectedMaincurrency);
 
     }
 
     @Severity(SeverityLevel.CRITICAL)
     @Test
     public void verifyUserAbleToSelectCurrencyInTOField() {
-        CurrencyConverterPage converterPage = CurrencyConverterPage.open();
 
         converterPage.selectTabTo();
 
-        String popCurrency = converterPage.getRandomPopularCurrency();
-        converterPage.selectMainCurrency(popCurrency)
-                .checkCurrentTabCurrency(popCurrency)
-                .checkPopCurrencySelected(popCurrency)
-                .checkMainCurrencySelected(popCurrency);
+        String expectedPopularCurrency = converterPage.getRandomPopularCurrency();
+        String expectedMaincurrency = "TRY";
+        converterPage.selectMainCurrency(expectedPopularCurrency)
+                .checkCurrentTabCurrency(expectedPopularCurrency)
+                .checkPopCurrencySelected(expectedPopularCurrency)
+                .checkMainCurrencySelected(expectedPopularCurrency)
 
-        String currency = "TRY";
-        converterPage.selectMainCurrency(currency)
-                .checkCurrentTabCurrency(currency)
-                .checkMainCurrencySelected(currency);
+                .selectMainCurrency(expectedMaincurrency)
+                .checkCurrentTabCurrency(expectedMaincurrency)
+                .checkMainCurrencySelected(expectedMaincurrency);
     }
 
     @Severity(SeverityLevel.CRITICAL)
     @Test
     public void verifyUserAbleToSelectCurrencyInFROMField() {
-        CurrencyConverterPage converterPage = CurrencyConverterPage.open();
 
         converterPage.selectTabFrom();
 
-        String popCurrency = converterPage.getRandomPopularCurrency();
-        converterPage.selectMainCurrency(popCurrency)
-                .checkCurrentTabCurrency(popCurrency)
-                .checkPopCurrencySelected(popCurrency)
-                .checkMainCurrencySelected(popCurrency);
+        String expectedPopularCurrency = converterPage.getRandomPopularCurrency();
+        String expectedMainCurrency = "ZAR";
 
-        String currency = "ZAR";
-        converterPage.selectMainCurrency(currency)
-                .checkCurrentTabCurrency(currency)
-                .checkMainCurrencySelected(currency);
+        converterPage.selectMainCurrency(expectedPopularCurrency)
+                .checkCurrentTabCurrency(expectedPopularCurrency)
+                .checkPopCurrencySelected(expectedPopularCurrency)
+                .checkMainCurrencySelected(expectedPopularCurrency)
+
+                .selectMainCurrency(expectedMainCurrency)
+                .checkCurrentTabCurrency(expectedMainCurrency)
+                .checkMainCurrencySelected(expectedMainCurrency);
     }
 
     @Severity(SeverityLevel.CRITICAL)
     @Test
     public void verifyUserAbleToClearTabs() {
-        CurrencyConverterPage converterPage = CurrencyConverterPage.open();
 
         converterPage.fillTabFrom("12,34")
-                .inputFieldFROMShouldNOTHave(Condition.value("0"))
-                .inputFieldTOShouldNOTHave(Condition.value("0"));
-        converterPage.clearResults()
-                .inputFieldFROMShouldHave(Condition.value("0"))
-                .inputFieldTOShouldHave(Condition.value("0"));
+                .inputFieldFROMShouldNOTHave(Condition.exactValue("0"))
+                .inputFieldTOShouldNOTHave(Condition.exactValue("0"))
+
+                .clearResults()
+                .inputFieldFROMShouldHave(Condition.exactValue("0"))
+                .inputFieldTOShouldHave(Condition.exactValue("0"));
 
     }
 
     @Severity(SeverityLevel.CRITICAL)
     @Test
     public void verifyUserAbleToFillTOField() {
-        CurrencyConverterPage converterPage = CurrencyConverterPage.open();
 
         converterPage.fillTabTo("56,78")
-                .inputFieldTOShouldHave(Condition.value("56,78"))
-                .inputFieldFROMShouldNOTHave(Condition.value("0"));
+                .inputFieldTOShouldHave(Condition.exactValue("56,78"))
+                .inputFieldFROMShouldNOTHave(Condition.exactValue("0"));
 
     }
 
     @Severity(SeverityLevel.CRITICAL)
     @Test
     public void verifyUserAbleToFillFROMField() {
-        CurrencyConverterPage converterPage = CurrencyConverterPage.open();
 
         converterPage.fillTabFrom("09,87")
-                .inputFieldFROMShouldHave(Condition.value("09,87"))
-                .inputFieldTOShouldNOTHave(Condition.value("0"));
+                .inputFieldFROMShouldHave(Condition.exactValue("09,87"))
+                .inputFieldTOShouldNOTHave(Condition.exactValue("0"));
 
     }
 
