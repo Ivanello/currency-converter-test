@@ -1,64 +1,121 @@
 package com.currencyConverter.app;
 
-import Pages.CurrencyConverterPage;
-import com.codeborne.selenide.Configuration;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.BeforeClass;
+import com.codeborne.selenide.Condition;
+import io.qameta.allure.Severity;
+import io.qameta.allure.SeverityLevel;
+import io.qameta.allure.Story;
+import pages.CurrencyConverterPage;
+import io.qameta.allure.Feature;
 import org.junit.Test;
 
-import io.qameta.allure.*;
 
-import static com.codeborne.selenide.Configuration.baseUrl;
-import static com.codeborne.selenide.Selenide.open;
+@Feature("Converter")
+@Story("Main converter funcionality")
+public class CurrencyConverterTest extends BaseTests {
 
-
-public class CurrencyConverterTest {
-    @BeforeClass
-    public static void setupClass() {
-        Configuration.browser = "chrome";
-    }
-
-    @Before
-    public void setupTest() {
-    }
-
-    @After
-    public void teardown() {
-    }
-
-    @Feature("Smoke Currency Converter Test")
+    @Severity(SeverityLevel.CRITICAL)
     @Test
-    public void smokeTest(){
+    public void verifyUserAbleToSelectCurrencyFromPopularList() {
+        CurrencyConverterPage converterPage = CurrencyConverterPage.open();
 
-//        String baseUrl = "https://goo.gl/UszK6B";
-        CurrencyConverterPage page = open(baseUrl, CurrencyConverterPage.class);
+        String popCurrency = converterPage.getRandomPopularCurrency();
+        converterPage.selectPopularCurrency(popCurrency)
+                .checkCurrentTabCurrency(popCurrency)
+                .checkPopCurrencySelected(popCurrency)
+                .checkMainCurrencySelected(popCurrency);
 
-        page.chooseTabFrom().fillTabFrom("1");
-
-        String currency = page.getRandomMainCurrency();
-        page.chooseMainCurrency(currency).
-                checkMainCurrencySelected(currency).
-                checkCurrentTabCurrency(currency);
-
-        currency = page.getRandomPopularCurrency();
-        page.choosePopularCurrency(currency).
-                checkPopCurrencySelected(currency).
-                checkCurrentTabCurrency(currency);
-
-        page.chooseTabTo();
-
-        currency = page.getRandomPopularCurrency();
-        page.choosePopularCurrency(currency).
-                checkPopCurrencySelected(currency).
-                checkCurrentTabCurrency(currency);
-
-        currency = page.getRandomMainCurrency();
-        page.chooseMainCurrency(currency).
-                checkMainCurrencySelected(currency).
-                checkCurrentTabCurrency(currency);
-
-        page.checkInputFieldsNotEqual("0");
-        page.clearResults().checkInputFieldsEqual("0");
     }
+
+    @Severity(SeverityLevel.CRITICAL)
+    @Test
+    public void verifyUserAbleToSelectCurrencyFromMainList() {
+        CurrencyConverterPage converterPage = CurrencyConverterPage.open();
+
+        String popCurrency = converterPage.getRandomPopularCurrency();
+        converterPage.selectMainCurrency(popCurrency)
+                .checkCurrentTabCurrency(popCurrency)
+                .checkPopCurrencySelected(popCurrency)
+                .checkMainCurrencySelected(popCurrency);
+
+        String currency = "BGN";
+        converterPage.selectMainCurrency(currency)
+                .checkCurrentTabCurrency(currency)
+                .checkMainCurrencySelected(currency);
+
+    }
+
+    @Severity(SeverityLevel.CRITICAL)
+    @Test
+    public void verifyUserAbleToSelectCurrencyInTOField() {
+        CurrencyConverterPage converterPage = CurrencyConverterPage.open();
+
+        converterPage.selectTabTo();
+
+        String popCurrency = converterPage.getRandomPopularCurrency();
+        converterPage.selectMainCurrency(popCurrency)
+                .checkCurrentTabCurrency(popCurrency)
+                .checkPopCurrencySelected(popCurrency)
+                .checkMainCurrencySelected(popCurrency);
+
+        String currency = "TRY";
+        converterPage.selectMainCurrency(currency)
+                .checkCurrentTabCurrency(currency)
+                .checkMainCurrencySelected(currency);
+    }
+
+    @Severity(SeverityLevel.CRITICAL)
+    @Test
+    public void verifyUserAbleToSelectCurrencyInFROMField() {
+        CurrencyConverterPage converterPage = CurrencyConverterPage.open();
+
+        converterPage.selectTabFrom();
+
+        String popCurrency = converterPage.getRandomPopularCurrency();
+        converterPage.selectMainCurrency(popCurrency)
+                .checkCurrentTabCurrency(popCurrency)
+                .checkPopCurrencySelected(popCurrency)
+                .checkMainCurrencySelected(popCurrency);
+
+        String currency = "ZAR";
+        converterPage.selectMainCurrency(currency)
+                .checkCurrentTabCurrency(currency)
+                .checkMainCurrencySelected(currency);
+    }
+
+    @Severity(SeverityLevel.CRITICAL)
+    @Test
+    public void verifyUserAbleToClearTabs() {
+        CurrencyConverterPage converterPage = CurrencyConverterPage.open();
+
+        converterPage.fillTabFrom("12,34")
+                .inputFieldFROMShouldNOTHave(Condition.value("0"))
+                .inputFieldTOShouldNOTHave(Condition.value("0"));
+        converterPage.clearResults()
+                .inputFieldFROMShouldHave(Condition.value("0"))
+                .inputFieldTOShouldHave(Condition.value("0"));
+
+    }
+
+    @Severity(SeverityLevel.CRITICAL)
+    @Test
+    public void verifyUserAbleToFillTOField() {
+        CurrencyConverterPage converterPage = CurrencyConverterPage.open();
+
+        converterPage.fillTabTo("56,78")
+                .inputFieldTOShouldHave(Condition.value("56,78"))
+                .inputFieldFROMShouldNOTHave(Condition.value("0"));
+
+    }
+
+    @Severity(SeverityLevel.CRITICAL)
+    @Test
+    public void verifyUserAbleToFillFROMField() {
+        CurrencyConverterPage converterPage = CurrencyConverterPage.open();
+
+        converterPage.fillTabFrom("09,87")
+                .inputFieldFROMShouldHave(Condition.value("09,87"))
+                .inputFieldTOShouldNOTHave(Condition.value("0"));
+
+    }
+
 }
